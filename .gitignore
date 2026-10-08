@@ -1,0 +1,178 @@
+# =============================================================================
+# .gitignore for Opportunity Analysis Tool (V3.2)
+# =============================================================================
+# Multi-device development: only source code, tests, config templates,
+# documentation, fixed test fixtures, and dependency lock files enter Git.
+# Local databases, uploads, generated reports, secrets, caches, and virtual
+# environments stay machine-local and are never synchronized via Git.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+develop-eggs/
+downloads/
+sdist/
+wheels/
+share/python-wheels/
+MANIFEST
+
+# Virtual environments (each machine creates its own)
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# ---------------------------------------------------------------------------
+# Node (reserved for future frontend build tooling; currently no build step)
+# ---------------------------------------------------------------------------
+node_modules/
+dist/
+build/
+.npm/
+.vite/
+.pnp.*
+yarn-error.log
+yarn-debug.log*
+pnpm-debug.log*
+.npmrc
+.yarn/
+
+# ---------------------------------------------------------------------------
+# Secrets — never commit real keys, tokens, cookies, sessions, or credentials
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+secrets/
+credentials/
+.aws/
+.gnupg/
+*.p12
+*id_rsa*
+*id_ed25519*
+known_hosts
+.htpasswd
+
+# ---------------------------------------------------------------------------
+# Local databases — each machine keeps its own SQLite
+# ---------------------------------------------------------------------------
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+data/*.sqlite
+data/*.sqlite3
+data/web.db
+data/web.db-journal
+data/web.db-wal
+data/web.db-shm
+
+# ---------------------------------------------------------------------------
+# Local file storage (user uploads and generated outputs)
+# Use /* pattern (not trailing slash) so .gitkeep exceptions can re-include.
+# ---------------------------------------------------------------------------
+data/web_storage/*
+data/output/*
+data/amazon/output/*
+data/v2/*
+data/v2_test/*
+data/v2_final/*
+data/verify_v1/*
+uploads/*
+outputs/*
+artifacts/*
+reports/*
+cache/*
+tmp/*
+temp/*
+storage/*
+logs/*
+*.log
+*.pid
+*.lock
+*.pid.lock
+
+# Keep directory structure via .gitkeep (re-include from exclusions above)
+!data/web_storage/.gitkeep
+!data/output/.gitkeep
+!data/amazon/output/.gitkeep
+!logs/.gitkeep
+!temp/.gitkeep
+
+# ---------------------------------------------------------------------------
+# OS and IDE
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+*.lnk
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+.classpath
+.factorypath
+
+# ---------------------------------------------------------------------------
+# Test and runtime artifacts
+# ---------------------------------------------------------------------------
+*.coverage
+coverage.xml
+*.cover
+.hypothesis/
+pytest-report.xml
+junit*.xml
+
+# ---------------------------------------------------------------------------
+# Handoff and scratch — local working notes not for synchronization
+# ---------------------------------------------------------------------------
+scratch/
+local_notes/
+*.local.md

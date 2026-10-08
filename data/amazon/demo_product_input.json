@@ -1,0 +1,17 @@
+{
+  "keyword": "chicken coop door",
+  "marketplace": "amazon_us",
+  "target_price_min": 20,
+  "target_price_max": 50,
+  "direction": "pet/home/outdoor",
+  "constraints": [
+    "must be solar powered",
+    "predator proof",
+    "easy installation"
+  ],
+  "notes": "Looking for a reliable automatic chicken coop door for backyard poultry. Target market is Amazon US, price band $20-$50. The user has provided competitor and review CSVs; mock data should fill keyword and market analysis gaps.",
+  "source": "user_input",
+  "confidence": "high",
+  "competitors_path": "data/amazon/demo_competitors.csv",
+  "reviews_path": "data/amazon/demo_reviews.csv"
+}

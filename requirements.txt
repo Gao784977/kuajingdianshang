@@ -1,0 +1,4 @@
+# Opportunity Analysis Tool - dependencies
+# First version intentionally uses only the Python standard library.
+# No third-party packages are required to run the tool or the test suite.
+openpyxl>=3.1.0  # V3 Excel output (optional; MD/JSON work without it)

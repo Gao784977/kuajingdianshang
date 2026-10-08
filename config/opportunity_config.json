@@ -1,0 +1,157 @@
+{
+  "schema_version": "opportunity_v2",
+  "fields": [
+    "opportunity_id",
+    "opportunity_name",
+    "customer_segment",
+    "industry",
+    "region",
+    "estimated_units",
+    "unit_price",
+    "variable_cost_per_unit",
+    "fixed_cost",
+    "marketing_cost",
+    "implementation_cost",
+    "expected_monthly_growth",
+    "competition_level",
+    "customer_need",
+    "delivery_difficulty",
+    "strategic_fit",
+    "initial_investment",
+    "expected_monthly_operating_cost",
+    "expected_monthly_revenue",
+    "risk_notes",
+    "owner",
+    "source",
+    "validation_status",
+    "customer_validation_notes",
+    "pricing_validation_notes",
+    "cost_validation_notes",
+    "reviewer",
+    "review_status",
+    "review_notes"
+  ],
+  "optional_fields": [
+    "owner",
+    "source",
+    "validation_status",
+    "customer_validation_notes",
+    "pricing_validation_notes",
+    "cost_validation_notes",
+    "reviewer",
+    "review_status",
+    "review_notes"
+  ],
+  "non_negative_numeric_fields": [
+    "estimated_units",
+    "unit_price",
+    "variable_cost_per_unit",
+    "fixed_cost",
+    "marketing_cost",
+    "implementation_cost",
+    "initial_investment",
+    "expected_monthly_operating_cost"
+  ],
+  "optional_numeric_fields": [
+    "expected_monthly_revenue"
+  ],
+  "growth_fields": [
+    "expected_monthly_growth"
+  ],
+  "enum_fields": {
+    "competition_level": ["low", "medium", "high"],
+    "customer_need": ["low", "medium", "high"],
+    "delivery_difficulty": ["low", "medium", "high"],
+    "strategic_fit": ["low", "medium", "high"]
+  },
+  "review_enum_fields": {
+    "validation_status": ["pending", "partial", "verified", "rejected"],
+    "review_status": ["not_reviewed", "in_review", "approved", "rejected"]
+  },
+  "required_text_fields": [
+    "opportunity_id",
+    "opportunity_name"
+  ],
+  "scoring_version": "scoring_v2",
+  "calculation_version": "calculation_v2",
+  "revenue_consistency_threshold": 0.10,
+  "payback_warning_months": 24,
+  "scoring_rules": {
+    "scoring_v1": {
+      "score_weights": {"demand": 30, "economics": 30, "strategy": 20, "feasibility": 20},
+      "customer_need_scores": {"high": 30, "medium": 20, "low": 10},
+      "strategic_fit_scores": {"high": 20, "medium": 13, "low": 6},
+      "delivery_difficulty_scores": {"low": 20, "medium": 13, "high": 6},
+      "competition_penalties": {"low": 0, "medium": 3, "high": 6},
+      "economics_score_bands": [
+        {"min_margin": 0.40, "max_payback": 6, "score": 30},
+        {"min_margin": 0.30, "max_payback": 12, "score": 24},
+        {"min_margin": 0.20, "max_payback": 18, "score": 18}
+      ],
+      "economics_positive_score": 10,
+      "economics_zero_score": 0,
+      "grade_thresholds": {"A": 80, "B": 60, "C": 40, "D": 0},
+      "payback_metric": "gross_profit"
+    },
+    "scoring_v2": {
+      "score_weights": {"demand": 30, "economics": 30, "strategy": 20, "feasibility": 20},
+      "customer_need_scores": {"high": 30, "medium": 20, "low": 10},
+      "strategic_fit_scores": {"high": 20, "medium": 13, "low": 6},
+      "delivery_difficulty_scores": {"low": 20, "medium": 13, "high": 6},
+      "competition_penalties": {"low": 0, "medium": 3, "high": 6},
+      "economics_score_bands": [
+        {"min_margin": 0.40, "max_payback": 6, "score": 30},
+        {"min_margin": 0.30, "max_payback": 12, "score": 24},
+        {"min_margin": 0.20, "max_payback": 18, "score": 18}
+      ],
+      "economics_positive_score": 10,
+      "economics_zero_score": 0,
+      "grade_thresholds": {"A": 80, "B": 60, "C": 40, "D": 0},
+      "payback_metric": "net_monthly_profit"
+    }
+  },
+  "recommendation_rules": {
+    "A": "proceed_to_review",
+    "B": "validate_before_review",
+    "C": "monitor",
+    "D": "reject_or_hold"
+  },
+  "scenarios": {
+    "base": {
+      "unit_price_multiplier": 1.0,
+      "units_multiplier": 1.0,
+      "variable_cost_multiplier": 1.0,
+      "fixed_cost_multiplier": 1.0,
+      "marketing_cost_multiplier": 1.0,
+      "implementation_cost_multiplier": 1.0,
+      "operating_cost_multiplier": 1.0
+    },
+    "optimistic": {
+      "unit_price_multiplier": 1.05,
+      "units_multiplier": 1.20,
+      "variable_cost_multiplier": 0.95,
+      "fixed_cost_multiplier": 1.0,
+      "marketing_cost_multiplier": 1.0,
+      "implementation_cost_multiplier": 1.0,
+      "operating_cost_multiplier": 1.0
+    },
+    "pessimistic": {
+      "unit_price_multiplier": 0.90,
+      "units_multiplier": 0.70,
+      "variable_cost_multiplier": 1.10,
+      "fixed_cost_multiplier": 1.10,
+      "marketing_cost_multiplier": 1.15,
+      "implementation_cost_multiplier": 1.10,
+      "operating_cost_multiplier": 1.15
+    }
+  },
+  "sensitivity": {
+    "parameters": [
+      "unit_price",
+      "estimated_units",
+      "variable_cost_per_unit",
+      "expected_monthly_operating_cost"
+    ],
+    "range_percents": [-20, -10, 0, 10, 20]
+  }
+}

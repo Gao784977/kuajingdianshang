@@ -1,0 +1,46 @@
+# veFaaS function configuration
+# Reference: https://www.volcengine.com/docs/6442/veFaaS
+
+version: "1.0"
+
+# --- API Handler (HTTP-triggered) ---
+api_handler:
+  runtime: python3.11
+  entry: deploy/veFaaS/handler.py
+  handler: handler
+  memory: 512
+  timeout: 30
+  triggers:
+    - type: http
+      path: /
+      methods: [GET, POST, PUT, DELETE]
+  environment:
+    APP_ENV: production
+    # Storage backend: set to 'tos' in production
+    STORAGE_BACKEND: tos
+    TOS_BUCKET: your-bucket-name
+    TOS_REGION: cn-beijing
+    # Database (use managed MySQL/Postgres in production)
+    DATABASE_URL: mysql+pymysql://user:pass@host:3306/name
+    # Session / CSRF
+    SESSION_TTL_SECONDS: "86400"
+    # Admin bootstrap token (change in production!)
+    ADMIN_BOOTSTRAP_TOKEN: ""
+
+# --- Worker Handler (queue-triggered) ---
+worker_handler:
+  runtime: python3.11
+  entry: deploy/veFaaS/worker_handler.py
+  handler: handler
+  memory: 2048
+  timeout: 900
+  triggers:
+    - type: rocketmq
+      topic: product-research-tasks
+      group: product-research-workers
+  environment:
+    APP_ENV: production
+    STORAGE_BACKEND: tos
+    DATABASE_URL: mysql+pymysql://user:pass@host:3306/name
+    # Queue for worker-to-API completion notifications
+    NOTIFICATION_QUEUE: product-research-notifications

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="">
+    <title>Amazon Product Research - V3.2</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Login View -->
+<div id="login-view" class="login-wrapper">
+    <div class="login-card">
+        <h1>Amazon Product Research</h1>
+        <p>V3.2 产品开发工作台</p>
+        <div id="login-error" class="alert alert-error hidden"></div>
+        <label for="invite-token">邀请码</label>
+        <input type="password" id="invite-token" placeholder="输入邀请码" autocomplete="off">
+        <button id="btn-login" class="btn btn-primary" style="width:100%;margin-top:16px;justify-content:center;">登录</button>
+    </div>
+</div>
+
+<!-- Workbench View -->
+<div id="workbench-view" class="hidden">
+    <header>
+        <h1>Amazon Product Research</h1>
+        <div class="user-area">
+            <span id="user-id" style="font-size:0.8rem;color:var(--text-light);"></span>
+            <button id="btn-logout" class="btn btn-secondary btn-sm">退出</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="global-alert"></div>
+
+        <!-- 1. Project Input -->
+        <div class="card">
+            <h2>1. 项目信息</h2>
+            <div class="grid-2">
+                <div>
+                    <label>项目名称</label>
+                    <input type="text" id="project-name" placeholder="例如：无线充电器调研">
+                </div>
+                <div>
+                    <label>市场</label>
+                    <select id="marketplace">
+                        <option value="us">美国 (US)</option>
+                        <option value="uk">英国 (UK)</option>
+                        <option value="de">德国 (DE)</option>
+                        <option value="jp">日本 (JP)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:12px;">
+                <label>关键词（回车添加）</label>
+                <div class="tag-list" id="keyword-tags"></div>
+                <input type="text" id="keyword-input" placeholder="输入关键词后按回车">
+            </div>
+            <div style="margin-top:12px;">
+                <label>类目（回车添加）</label>
+                <div class="tag-list" id="category-tags"></div>
+                <input type="text" id="category-input" placeholder="输入类目后按回车">
+            </div>
+            <div style="margin-top:12px;">
+                <label>目标价格区间</label>
+                <div class="grid-3">
+                    <input type="number" id="price-min" placeholder="最低">
+                    <input type="number" id="price-max" placeholder="最高">
+                    <input type="text" id="price-currency" placeholder="币种 (USD)" value="USD">
+                </div>
+            </div>
+            <button id="btn-create-project" class="btn btn-primary" style="margin-top:16px;">创建项目</button>
+            <span id="project-status" style="margin-left:12px;font-size:0.85rem;"></span>
+        </div>
+
+        <!-- 2. URL Input -->
+        <div class="card">
+            <h2>2. URL 数据源</h2>
+            <div class="alert alert-info">
+                URL 访问默认<strong>关闭</strong>。开启前请确认来源可信。系统会拦截内网、回环和云元数据地址（SSRF 防护）。
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="url-fetch-enabled">
+                <span>允许访问 URL</span>
+            </label>
+            <div style="margin-top:12px;">
+                <label>URL 列表（每行一个，可选类型标注如: amazon:https://...）</label>
+                <textarea id="url-list" rows="4" placeholder="https://www.amazon.com/..."></textarea>
+            </div>
+        </div>
+
+        <!-- 3. File Upload -->
+        <div class="card">
+            <h2>3. 数据文件上传</h2>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px;">
+                支持 .xlsx / .csv / .json。<strong>不支持 .xls</strong>，请先转换为 .xlsx。
+            </p>
+            <input type="file" id="file-input" multiple accept=".xlsx,.csv,.json">
+            <button id="btn-upload" class="btn btn-primary" style="margin-top:8px;">上传文件</button>
+            <div id="upload-results" style="margin-top:12px;"></div>
+            <button id="btn-detect" class="btn btn-secondary" style="margin-top:8px;">自动识别文件类型</button>
+        </div>
+
+        <!-- 4. Templates -->
+        <div class="card">
+            <h2>4. 报告模板（可选）</h2>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px;">
+                上传市场调研或产品开发规划模板。系统将保真填充（保留样式、公式、合并单元格）。
+            </p>
+            <select id="template-type">
+                <option value="market_research_template">市场调研模板</option>
+                <option value="product_development_template">产品开发规划模板</option>
+            </select>
+            <input type="file" id="template-input" accept=".xlsx" style="margin-top:8px;">
+            <button id="btn-upload-template" class="btn btn-primary btn-sm" style="margin-top:8px;">上传模板</button>
+            <div id="template-list" style="margin-top:12px;"></div>
+        </div>
+
+        <!-- 5. Workflow Control -->
+        <div class="card">
+            <h2>5. 工作流控制</h2>
+            <button id="btn-validate" class="btn btn-secondary">校验输入</button>
+            <button id="btn-start-analysis" class="btn btn-primary">开始分析（Phase 1）</button>
+            <button id="btn-cancel-job" class="btn btn-danger hidden">取消任务</button>
+            <span id="job-status" style="margin-left:12px;"></span>
+        </div>
+
+        <!-- 6. Task Progress -->
+        <div class="card">
+            <h2>6. 任务进度</h2>
+            <div id="progress-info" style="font-size:0.85rem;margin-bottom:8px;"></div>
+            <div id="agent-pipeline" class="agent-pipeline"></div>
+            <div id="job-events" style="margin-top:12px;max-height:200px;overflow-y:auto;font-size:0.8rem;color:var(--text-light);"></div>
+        </div>
+
+        <!-- 7. Product Candidates -->
+        <div class="card">
+            <h2>7. 产品候选</h2>
+            <table id="candidates-table">
+                <thead><tr><th>候选</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <button id="btn-continue-dev" class="btn btn-success" style="margin-top:12px;">继续产品开发（Phase 2）</button>
+        </div>
+
+        <!-- 8. Manual Inputs -->
+        <div class="card">
+            <h2>8. 人工供应链信息</h2>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px;">
+                留空字段将保持为空，不会自动填充 0 或模拟值。
+            </p>
+            <div class="grid-3">
+                <div><label>供应商名称</label><input type="text" id="mi-supplier"></div>
+                <div><label>采购成本</label><input type="text" id="mi-cost"></div>
+                <div><label>MOQ</label><input type="text" id="mi-moq"></div>
+                <div><label>物流方式</label><input type="text" id="mi-logistics"></div>
+                <div><label>物流成本</label><input type="text" id="mi-shipping"></div>
+                <div><label>目标利润率</label><input type="text" id="mi-margin"></div>
+            </div>
+            <button id="btn-save-manual" class="btn btn-primary" style="margin-top:12px;">保存人工信息</button>
+        </div>
+
+        <!-- 9. Outputs -->
+        <div class="card">
+            <h2>9. 报告下载</h2>
+            <table id="outputs-table">
+                <thead><tr><th>类型</th><th>文件名</th><th>大小</th><th>操作</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

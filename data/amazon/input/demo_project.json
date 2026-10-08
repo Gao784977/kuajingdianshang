@@ -1,0 +1,79 @@
+{
+  "project_id": "demo-us-001",
+  "project_name": "Demo US Market Research",
+  "marketplace": "amazon_us",
+  "keywords": [
+    "chicken saddle",
+    "chicken coop accessories",
+    "poultry feeder"
+  ],
+  "categories": [
+    "Poultry Habitat Supplies",
+    "Poultry Feeding Equipment"
+  ],
+  "target_price_range": {
+    "min": 20.0,
+    "max": 50.0,
+    "currency": "USD"
+  },
+  "product_direction": [
+    "pet",
+    "home",
+    "outdoor"
+  ],
+  "target_customer": "",
+  "constraints": [],
+  "urls": [
+    {
+      "url": "https://www.amazon.com/dp/B0TEST001",
+      "url_type": "amazon_product",
+      "purpose": "competitor_reference",
+      "enabled": true,
+      "notes": "Reference product page for competitive analysis"
+    }
+  ],
+  "excel_files": [
+    {
+      "path": "tests/fixtures/products.xlsx",
+      "type": "auto_detect",
+      "purpose": "competitor_pool",
+      "enabled": true
+    },
+    {
+      "path": "tests/fixtures/search.xlsx",
+      "type": "auto_detect",
+      "purpose": "search_position_analysis",
+      "enabled": true
+    },
+    {
+      "path": "tests/fixtures/keyword_analysis.xlsx",
+      "type": "auto_detect",
+      "purpose": "keyword_metrics",
+      "enabled": true
+    },
+    {
+      "path": "tests/fixtures/market_analysis.xlsx",
+      "type": "auto_detect",
+      "purpose": "market_overview",
+      "enabled": true
+    },
+    {
+      "path": "tests/fixtures/brands.xlsx",
+      "type": "auto_detect",
+      "purpose": "brand_analysis",
+      "enabled": true
+    },
+    {
+      "path": "tests/fixtures/sellers.xlsx",
+      "type": "auto_detect",
+      "purpose": "seller_analysis",
+      "enabled": true
+    }
+  ],
+  "manual_inputs": {
+    "supplier_information": [],
+    "product_candidates": [],
+    "cost_inputs": [],
+    "review_notes": ""
+  }
+}

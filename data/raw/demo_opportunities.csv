@@ -1,0 +1,6 @@
+opportunity_id,opportunity_name,customer_segment,industry,region,estimated_units,unit_price,variable_cost_per_unit,fixed_cost,marketing_cost,implementation_cost,expected_monthly_growth,competition_level,customer_need,delivery_difficulty,strategic_fit,initial_investment,expected_monthly_operating_cost,expected_monthly_revenue,risk_notes
+OPP-001,智能客服 SaaS,中小企业,互联网,华东,1000,100,30,10000,5000,5000,0.10,low,high,low,high,100000,20000,,客户需求强烈且交付难度低，预计可快速回本
+OPP-002,数据可视化工具,中型企业,软件,华北,500,80,32,5000,3000,2000,0.05,medium,medium,medium,medium,80000,8000,40000,市场竞争中等，需进一步验证客户付费意愿
+OPP-003,线下培训课程,个人用户,教育,华南,200,50,38,1000,500,500,0.02,high,medium,low,low,100000,2000,10000,竞争激烈且战略匹配度低，仅建议观察
+OPP-004,老旧系统外包维护,大型企业,IT服务,西南,100,50,60,2000,1000,1000,0.00,high,low,high,low,50000,3000,5000,单位成本高于售价，预计亏损，暂不立项
+OPP-005,AI 质检方案,制造业,工业互联网,华东,800,120,55,8000,6000,6000,0.08,high,high,high,high,200000,15000,96000,需求和战略匹配高，但竞争激烈且交付难度大

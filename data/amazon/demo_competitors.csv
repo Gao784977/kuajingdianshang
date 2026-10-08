@@ -1,0 +1,5 @@
+brand,asin,product_name,price,rating,review_count,selling_points,negative_points,source
+PetsFit,USER-ASIN-001,PetsFit Automatic Chicken Coop Door,32.99,4.2,856,Solar powered; waterproof; light sensor,Hard to install; instructions unclear; motor noise,imported_csv
+RentACoop,USER-ASIN-002,RentACoop Auto Chicken Coop Door Kit,39.99,4.5,1240,Easy setup; reliable timer; sturdy frame,Motor fails after 6 months; expensive,imported_csv
+Manna Pro,USER-ASIN-003,Manna Pro Digital Chicken Coop Door,28.99,3.8,420,Affordable; light sensor; compact design,Flimsy packaging; door jams; weak motor,imported_csv
+Hooyon,USER-ASIN-004,Hooyon Poultry House Door Opener,45.99,4.0,680,Heavy duty; predator proof; dual power,Complex wiring; missing parts; long shipping,imported_csv

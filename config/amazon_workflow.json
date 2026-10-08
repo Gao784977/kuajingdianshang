@@ -1,0 +1,111 @@
+{
+  "workflow_version": "amazon_workflow_v1",
+  "calculation_version": "amazon_calculation_v1",
+  "agent_versions": {
+    "keyword": "keyword_agent_v1",
+    "market": "market_agent_v1",
+    "competitor": "competitor_agent_v1",
+    "review": "review_agent_v1",
+    "opportunity": "opportunity_agent_v1",
+    "product": "product_agent_v1",
+    "profit": "profit_agent_v1",
+    "report": "report_agent_v1",
+    "excel": "excel_agent_v1",
+    "master": "master_agent_v1"
+  },
+  "supported_marketplaces": ["amazon_us"],
+  "score_rules": {
+    "market_opportunity": 30,
+    "competition": 20,
+    "supply_chain_feasibility": 20,
+    "differentiation_potential": 30
+  },
+  "mock_data_settings": {
+    "product_keyword": "chicken coop door",
+    "marketplace": "amazon_us",
+    "competitor_count": 4,
+    "review_count": 12,
+    "default_confidence": "low"
+  },
+  "profit_cost_defaults": {
+    "selling_price": 29.99,
+    "unit_cost": 8.50,
+    "inbound_shipping": 1.20,
+    "international_shipping": 2.80,
+    "customs_duty": 0.60,
+    "fba_fee": 3.90,
+    "referral_fee": 4.50,
+    "storage_fee": 0.30,
+    "advertising_cost": 3.00,
+    "return_cost": 1.50,
+    "other_variable_cost": 0.50,
+    "fixed_development_cost": 5000.00,
+    "initial_investment": 12000.00,
+    "estimated_monthly_units": 300,
+    "monthly_fixed_cost": 800.00
+  },
+  "scenarios": {
+    "base": {
+      "selling_price_multiplier": 1.0,
+      "units_multiplier": 1.0,
+      "unit_cost_multiplier": 1.0,
+      "fba_fee_multiplier": 1.0,
+      "referral_fee_multiplier": 1.0,
+      "storage_fee_multiplier": 1.0,
+      "advertising_cost_multiplier": 1.0,
+      "return_cost_multiplier": 1.0,
+      "fixed_development_cost_multiplier": 1.0
+    },
+    "optimistic": {
+      "selling_price_multiplier": 1.10,
+      "units_multiplier": 1.25,
+      "unit_cost_multiplier": 0.92,
+      "fba_fee_multiplier": 0.95,
+      "referral_fee_multiplier": 1.0,
+      "storage_fee_multiplier": 0.90,
+      "advertising_cost_multiplier": 0.85,
+      "return_cost_multiplier": 0.80,
+      "fixed_development_cost_multiplier": 1.0
+    },
+    "pessimistic": {
+      "selling_price_multiplier": 0.88,
+      "units_multiplier": 0.70,
+      "unit_cost_multiplier": 1.12,
+      "fba_fee_multiplier": 1.10,
+      "referral_fee_multiplier": 1.0,
+      "storage_fee_multiplier": 1.20,
+      "advertising_cost_multiplier": 1.30,
+      "return_cost_multiplier": 1.40,
+      "fixed_development_cost_multiplier": 1.10
+    }
+  },
+  "review_categories": [
+    "installation",
+    "quality",
+    "packaging",
+    "feature_request",
+    "price",
+    "shipping",
+    "customer_service"
+  ],
+  "output_settings": {
+    "default_output_dir": "data/amazon/output",
+    "markdown_template": "amazon_product_report_{timestamp}.md",
+    "json_template": "amazon_product_analysis_{timestamp}.json",
+    "market_excel_template": "market_report_{timestamp}.xlsx",
+    "product_excel_template": "product_plan_{timestamp}.xlsx",
+    "intermediate_dir": "intermediate"
+  },
+  "confidence_rules": {
+    "user_input": "high",
+    "mock_data": "low",
+    "calculated": "high",
+    "imported_csv": "medium",
+    "imported_xlsx": "medium",
+    "manual_review": "medium"
+  },
+  "validation": {
+    "required_input_fields": ["keyword", "marketplace"],
+    "strict_review_enum": true
+  }
+}
