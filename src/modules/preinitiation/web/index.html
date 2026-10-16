@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>预立项工作台（本地演示）</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-row">
+    <div class="brand">
+      <h1>预立项工作台</h1>
+      <span class="badge badge-demo">本地演示 · 未连接生产系统</span>
+    </div>
+    <div class="task-id">
+      演示任务：<strong id="taskId">-</strong> · 参考 ASIN：<strong id="asin">-</strong>
+    </div>
+  </div>
+
+  <div class="warn-banner" role="alert">
+    所有测算数值为固定测试结果，不可用于真实立项
+  </div>
+
+  <div class="versions" id="versions"></div>
+
+  <div class="toolbar">
+    <button id="btn-load-sample" type="button">加载样例</button>
+    <button id="btn-reset" type="button" class="ghost">清空演示数据</button>
+    <span id="dirty-badge" class="badge badge-warn hidden">有未保存修改</span>
+    <span class="hint-inline">数据仅存于进程内存，服务重启即全部丢失。</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- A. 基础输入 -->
+  <section class="card" id="sec-input">
+    <h2>A. 基础输入</h2>
+    <p class="hint">
+      展示当前 S1 支持的字段。带 <span class="req">*</span> 为当前正算路径必填；
+      未知请留空（缺失成本不会自动补 0）。这是<b>流程验证输入</b>，不是完整 OP 输入集。
+      售价与目标利润率互斥，只能填写其中之一。
+    </p>
+    <form id="input-form" autocomplete="off">
+      <div class="grid">
+        <label class="field">
+          <span class="lbl">市场（一期固定）</span>
+          <input type="text" value="US" readonly>
+        </label>
+        <label class="field">
+          <span class="lbl">平台（一期固定）</span>
+          <input type="text" value="Amazon SC" readonly>
+        </label>
+
+        <label class="field">
+          <span class="lbl">售价 (USD) <span class="req">*</span></span>
+          <input type="text" data-field="selling_price_usd" inputmode="decimal" placeholder="例 39.99">
+          <span class="tip">与目标利润率互斥</span>
+        </label>
+        <label class="field">
+          <span class="lbl">目标利润率（0–1，可为负）</span>
+          <input type="text" data-field="target_margin_pct" inputmode="decimal" placeholder="例 0.20（未知留空）">
+          <span class="tip">仅用于结果校验；反推售价 blocked·D5</span>
+        </label>
+
+        <label class="field">
+          <span class="lbl">活动营销费占比（0–1）<span class="req">*</span></span>
+          <input type="text" data-field="promotion_fee_ratio" inputmode="decimal" placeholder="例 0.10">
+        </label>
+        <label class="field">
+          <span class="lbl">汇率 USD→CNY <span class="req">*</span></span>
+          <input type="text" data-field="fx_usd_to_cny" inputmode="decimal" placeholder="例 7.10">
+        </label>
+        <label class="field">
+          <span class="lbl">汇率获取时间（未知留空）</span>
+          <input type="text" data-field="fx_fetched_at" placeholder="例 2026-10-15T09:00:00+08:00">
+        </label>
+
+        <label class="field">
+          <span class="lbl">目标采购价下限 (CNY)</span>
+          <input type="text" data-field="target_purchase_price_min_cny" inputmode="decimal">
+          <span class="tip">溯源价格上限依据</span>
+        </label>
+        <label class="field">
+          <span class="lbl">目标采购价上限 (CNY)</span>
+          <input type="text" data-field="target_purchase_price_max_cny" inputmode="decimal">
+        </label>
+
+        <label class="field">
+          <span class="lbl">目标采购量（未知留空）</span>
+          <input type="text" data-field="target_qty" inputmode="numeric" placeholder="正整数；未知留空，禁止填 0">
+          <span class="tip">未知则数量适用性永不通过</span>
+        </label>
+        <label class="field">
+          <span class="lbl">首轮估算采购价 (CNY) <span class="req">*</span></span>
+          <input type="text" data-field="estimated_purchase_price_cny" inputmode="decimal" placeholder="例 25.00">
+          <span class="tip">首轮测算采用</span>
+        </label>
+
+        <label class="field span-2">
+          <span class="lbl">备注（meta 字段，修改不触发失效）</span>
+          <input type="text" data-field="note" placeholder="流程验证用说明">
+        </label>
+      </div>
+      <div class="row">
+        <button type="submit" class="primary">保存输入</button>
+        <span class="muted" id="input-save-hint"></span>
+      </div>
+    </form>
+    <div class="kv" id="input-meta"></div>
+  </section>
+
+  <!-- B. 手工候选 -->
+  <section class="card" id="sec-candidate">
+    <h2>B. 手工候选</h2>
+    <p class="hint">
+      手工录入降级路径：来源固定 <code>manual</code>，<b>准入状态固定为「准入未验证」</b>（≠ 已满足 1688 准入）。
+      搜索/摘要报价<b>仅展示</b>；有效采购价只取 <b>SKU 级价格</b>。一期报价币种仅 CNY，其他币种会被拒绝（不静默换算）。
+    </p>
+
+    <details id="add-candidate">
+      <summary>新增手工候选</summary>
+      <form id="candidate-form" class="stack" autocomplete="off">
+        <div class="grid">
+          <label class="field"><span class="lbl">offer 编号 <span class="req">*</span></span>
+            <input type="text" data-c="offer_id" placeholder="例 offer-8801"></label>
+          <label class="field"><span class="lbl">报价来源（必填）<span class="req">*</span></span>
+            <input type="text" data-c="quote_source" placeholder="例 https://detail.1688.com/offer/8801.html（截图存档）"></label>
+          <label class="field"><span class="lbl">报价获取时间（必填）<span class="req">*</span></span>
+            <input type="text" data-c="quoted_at" placeholder="例 2026-10-15T10:30:00+08:00"></label>
+          <label class="field"><span class="lbl">搜索/摘要报价 (CNY，仅展示)</span>
+            <input type="text" data-c="offer_price_cny" inputmode="decimal"></label>
+          <label class="field"><span class="lbl">含税口径</span>
+            <select data-c="tax_inclusive">
+              <option value="unknown">未知（不臆断）</option>
+              <option value="true">含税</option>
+              <option value="false">不含税</option>
+            </select></label>
+          <label class="field"><span class="lbl">MOQ（未知留空）</span>
+            <input type="text" data-c="moq" inputmode="numeric"></label>
+          <label class="field"><span class="lbl">币种（一期固定）</span>
+            <input type="text" value="CNY" readonly></label>
+        </div>
+
+        <div class="subhead">
+          <span>SKU 与阶梯价</span>
+          <button type="button" class="ghost small" id="btn-add-sku">添加 SKU</button>
+        </div>
+        <div id="sku-editor" class="sku-editor"></div>
+
+        <div class="row">
+          <button type="submit" class="primary">保存候选</button>
+          <span class="muted" id="candidate-form-hint"></span>
+        </div>
+      </form>
+    </details>
+
+    <div id="candidate-list"></div>
+  </section>
+
+  <!-- C. 演示测算 -->
+  <section class="card" id="sec-calc">
+    <h2>C. 演示测算</h2>
+    <p class="warn-inline">
+      演示测算使用 <b>TestOnlyProvider 固定测试输出</b>，不随输入计算真实利润，且允许展示负利润率。
+      真实计算入口当前不可用（公式未通过验证）。
+    </p>
+    <div class="row wrap">
+      <button type="button" id="btn-calc-first">首轮测算（演示）</button>
+      <button type="button" id="btn-calc-recalc">有效采购价复算（演示）</button>
+      <button type="button" id="btn-calc-real" disabled title="真实入口未启用">真实计算（不可用）</button>
+      <span id="dirty-calc-warn" class="badge badge-warn hidden">有未保存修改：测算基于已保存内容，而非当前表单</span>
+    </div>
+    <div id="real-entry-reasons" class="blocked-box"></div>
+    <div id="calc-result"></div>
+    <div id="zero-margin" class="zero-margin"></div>
+  </section>
+
+  <!-- D. 快照与事件 -->
+  <section class="card" id="sec-snapshot">
+    <h2>D. 快照与事件</h2>
+    <p class="hint">
+      快照内容不可变（生成后不受后续输入影响）；输入/参数/候选变化后，旧快照仅标记为<b>历史（过期）</b>，
+      内容与事件历史不变。<b>过期快照禁止新的确认操作</b>。正式确认当前不可用，可查看门禁原因。
+    </p>
+    <div class="row wrap">
+      <button type="button" class="primary" id="btn-snapshot">生成快照</button>
+      <span class="muted">要求：最新复算为 ok、基于有效采购价、且未过期。</span>
+    </div>
+    <div id="snapshot-list"></div>
+  </section>
+
+  <!-- E. 导出 -->
+  <section class="card" id="sec-export">
+    <h2>E. 导出「待核验预览单」</h2>
+    <p class="hint">
+      导出内容为<b>待核验预览单（非正式测算）</b>：JSON 强制包含 <code>preview_notice</code> /
+      <code>demo</code> / <code>mode</code> / <code>verification</code> / <code>snapshot_versions</code> /
+      <code>expired</code>；文件名与页面均标注「禁止用于审批或采购决策」。<b>浏览器下载不等于已提交审批</b>。
+    </p>
+    <div id="export-list"></div>
+    <div id="export-notice" class="export-notice hidden"></div>
+    <pre id="export-preview" class="json-preview hidden"></pre>
+  </section>
+
+</main>
+
+<footer>
+  <div id="guarantee" class="guarantee"></div>
+  <div class="footer-note">
+    本页为本地演示：仅监听 127.0.0.1；不调用 OP / 1688 / 公司生产接口；
+    http.server 与内存仓储不可用于生产。
+    审批顺序、宿主系统与确认角色均<b>未决</b>（Q5/Q8），本页不自行指定。
+  </div>
+</footer>
+
+<div id="toast" class="toast hidden"></div>
+<div id="dialog" class="modal hidden">
+  <div class="modal-box">
+    <div id="dialog-body"></div>
+    <div class="row end">
+      <button type="button" class="ghost" id="dialog-cancel">取消</button>
+      <button type="button" class="primary" id="dialog-ok">确定</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
