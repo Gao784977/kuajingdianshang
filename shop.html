@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全部商品 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active="shop"></div>
+
+<section class="page-hero" style="padding:52px 0 44px">
+  <div class="container">
+    <span class="eyebrow">All Products</span>
+    <h1 class="display">全部商品</h1>
+    <p>在册 <b id="total-count">—</b> 件典藏商品 · 搜索、筛选与排序即时生效</p>
+  </div>
+</section>
+
+<section style="padding:34px 0 60px">
+  <div class="container">
+    <div class="shop-layout">
+      <aside class="shop-side">
+        <div class="side-group">
+          <h4>商品分类</h4>
+          <div id="side-cats"></div>
+        </div>
+        <div class="side-group">
+          <h4>快捷入口</h4>
+          <a class="side-link" href="shop.html?sale=1">本周促销</a>
+          <a class="side-link" href="shop.html?instock=1">仅显示有货</a>
+          <a class="side-link" href="shop.html?sort=new">最新上架</a>
+        </div>
+      </aside>
+
+      <div>
+        <div class="shop-toolbar">
+          <div class="toolbar-group">
+            <div class="search-input-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="q" placeholder="搜索商品名 / 品牌 / 关键词…" autocomplete="off">
+            </div>
+            <select class="sort-select" id="sort">
+              <option value="default">默认排序</option>
+              <option value="new">最新上架</option>
+              <option value="price-asc">价格从低到高</option>
+              <option value="price-desc">价格从高到低</option>
+              <option value="name">名称排序</option>
+            </select>
+          </div>
+          <span class="result-info" id="result-info">加载中…</span>
+        </div>
+        <div id="active-chips" style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap"></div>
+        <div class="products-grid" id="grid"></div>
+        <div id="empty" style="display:none">
+          <div class="empty-state">
+            <div class="es-icon">⌕</div>
+            <h3 class="display">没有找到匹配的商品</h3>
+            <p>换个关键词，或清除筛选条件再试试</p>
+            <button class="btn btn-outline" onclick="location.href='shop.html'">清除筛选</button>
+          </div>
+        </div>
+        <div class="pagination" id="pager"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script src="assets/js/shop.js?v=20261108"></script>
+</body>
+</html>

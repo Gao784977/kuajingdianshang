@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贵金属回收 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active="buyback"></div>
+
+<section class="page-hero" style="padding:56px 0 48px">
+  <div class="container">
+    <span class="eyebrow">Buyback Service</span>
+    <h1 class="display">贵金属回收</h1>
+    <p>闲置的名品打火机、贵金属与腕表，交由懂行的人估价。鉴定透明、当场打款。</p>
+  </div>
+</section>
+
+<section style="padding:10px 0 30px">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:30px">
+      <span class="eyebrow">What We Buy</span>
+      <h2>回收品类</h2>
+    </div>
+    <div class="service-row">
+      <div class="service-card">
+        <div class="sc-icon">🔥</div>
+        <h3>名品打火机</h3>
+        <p>S.T. DUPONT（都彭）、纯金/纯银 ZIPPO、IMCO 古董款等，成色越好估价越高。</p>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon">💍</div>
+        <h3>贵金属首饰</h3>
+        <p>金、铂金、K金饰品与金条，按当日贵金属牌价 + 工艺溢价计算。</p>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon">⌚</div>
+        <h3>腕表怀表</h3>
+        <p>机械腕表与古董怀表，由合作鉴定师评估机芯状态与 rarity。</p>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon">🥃</div>
+        <h3>名酒陈酿</h3>
+        <p>未开封的威士忌、白兰地老酒，1980 年代以前的日威尤其欢迎。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:36px 0 30px">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:30px">
+      <span class="eyebrow">Process</span>
+      <h2>回收流程</h2>
+    </div>
+    <div class="steps steps-grid">
+      <div class="step"><span class="step-dot">1</span><div><b>提交估价单</b><p>填写商品信息并附照片（品牌、成色、附件、购买年份）。</p></div></div>
+      <div class="step"><span class="step-dot">2</span><div><b>预估报价</b><p>鉴定师 1 个工作日内回复预估区间，不满意可随时中止。</p></div></div>
+      <div class="step"><span class="step-dot">3</span><div><b>邮寄或到店</b><p>顺丰包邮寄送（运费我们出），或预约到横滨门店当面鉴定。</p></div></div>
+      <div class="step"><span class="step-dot">4</span><div><b>成交打款</b><p>确认最终报价后，当场银行转账 / 现金支付，无任何手续费。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:36px 0 80px">
+  <div class="container">
+    <div class="checkout-layout">
+      <form class="form-card" id="buyback-form">
+        <h3>估价申请单</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>称呼 <span class="req">*</span></label><input name="name" required placeholder="您的称呼"></div>
+          <div class="form-field"><label>联系方式 <span class="req">*</span></label><input name="contact" required placeholder="电话 / 邮箱 / LINE ID"></div>
+          <div class="form-field full"><label>回收品类</label>
+            <select name="kind">
+              <option>名品打火机</option>
+              <option>贵金属首饰</option>
+              <option>腕表怀表</option>
+              <option>名酒陈酿</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="form-field full"><label>商品描述 <span class="req">*</span></label><textarea name="desc" required style="min-height:110px;resize:vertical" placeholder="品牌 / 型号 / 成色 / 附件（盒、证）/ 购买年份…"></textarea></div>
+        </div>
+        <button class="btn btn-accent btn-lg" type="submit" style="margin-top:18px">提交估价申请</button>
+      </form>
+      <aside>
+        <div class="summary-card">
+          <h3>估价承诺</h3>
+          <div class="sum-row"><span>鉴定透明</span><b>当面 / 视频鉴定</b></div>
+          <div class="sum-row"><span>报价依据</span><b>当日牌价 + 成色</b></div>
+          <div class="sum-row"><span>打款时效</span><b>确认后当场</b></div>
+          <div class="sum-row"><span>手续费</span><b>0 円</b></div>
+          <p class="small muted" style="margin-top:14px;line-height:1.8">演示站点：估价单提交后仅保存在本地浏览器，不会真正发送。真实回收服务请咨询原站。</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("buyback-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const box = JSON.parse(localStorage.getItem("kasuga_buyback") || "[]");
+    box.unshift({ name: fd.get("name"), contact: fd.get("contact"), kind: fd.get("kind"), desc: fd.get("desc"), date: new Date().toISOString().slice(0, 10) });
+    localStorage.setItem("kasuga_buyback", JSON.stringify(box));
+    e.target.reset();
+    showToast("估价申请已提交（演示：已存本地）");
+  });
+});
+</script>
+</body>
+</html>

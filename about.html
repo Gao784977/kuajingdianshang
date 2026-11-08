@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关于我们 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<section class="page-hero" style="padding:56px 0 48px">
+  <div class="container">
+    <span class="eyebrow">About Us</span>
+    <h1 class="display">从横滨港出发的典藏商号</h1>
+    <p>KASUGA SHOJI 以港町横滨为根，为成年顾客挑选经得起时间检验的烟草、雪茄与烟具藏品。</p>
+  </div>
+</section>
+
+<section style="padding:10px 0 20px">
+  <div class="container">
+    <div class="info-cols">
+      <div class="info-block">
+        <h3 class="display">港町的商人之心</h3>
+        <p>横滨自开港以来便是舶来品进入日本的门户。港口带来了烟草、雪茄与咖啡，也带来了一种做生意的老派原则：<b>货真价实，童叟无欺</b>。KASUGA SHOJI 延续的正是这种商人之心——选品只选我们自己愿意收藏的东西，报价永远清晰透明。</p>
+        <p>本站是这一商号的线上典藏馆：将实体店的货架搬进浏览器，让全国各地的成年藏家都能以同样的价格买到同样的货。</p>
+      </div>
+      <div class="info-block">
+        <h3 class="display">我们如何选品</h3>
+        <p>在册的每一件商品都经过三道筛选：</p>
+        <p><b>① 正渠道。</b>仅经由正规贸易渠道进货，拒绝来路不明的平行货。</p>
+        <p><b>② 状态管理。</b>雪茄置于恒温恒湿柜，手卷烟丝按批次控温保存，到货即录、售出即销。</p>
+        <p><b>③ 价格诚实。</b>不玩先涨后降的把戏；促销就是真实的促销。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding:40px 0 10px">
+  <div class="container">
+    <div class="hero-stats" style="justify-content:center;gap:60px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:36px 0">
+      <div class="hero-stat"><b id="st-p">—</b><span>在册商品</span></div>
+      <div class="hero-stat"><b id="st-c">—</b><span>收藏分类</span></div>
+      <div class="hero-stat"><b id="st-b">—</b><span>合作品牌</span></div>
+      <div class="hero-stat"><b>20+</b><span>只服务成年人</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding:56px 0 24px">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:34px">
+      <span class="eyebrow">Timeline</span>
+      <h2>商号的脚印</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><b>开港町的起点</b><p>商号起于横滨关内一带的小店，最初只做熟客生意，靠口碑慢慢积累起第一批藏家。</p></div>
+      <div class="tl-item"><b>恒温恒湿雪茄柜</b><p>引入专业雪茄柜与批次管理，把「库存状态」变成了可以信赖的承诺。</p></div>
+      <div class="tl-item"><b>线上典藏馆</b><p>把货架搬上网络，全站静态、秒开即用，让九州的藏家和北海道的藏家享受同一种购物体验。</p></div>
+      <div class="tl-item"><b>今天</b><p>继续以选品人的眼光扩充馆藏，并新增藏家社区，让评价与经验在买家之间流转。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding:30px 0 70px">
+  <div class="container">
+    <div class="notice" style="text-align:center">
+      本站为演示性质的克隆站点，商品数据整理自公开页面，仅供学习与展示；未接入真实支付，购物流程为模拟。
+      吸烟有害健康，未成年人禁止购买与使用烟草制品。
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof PRODUCTS !== "undefined" && PRODUCTS.length) {
+    document.getElementById("st-p").textContent = PRODUCTS.length.toLocaleString() + "+";
+    document.getElementById("st-c").textContent = typeof CATEGORIES !== "undefined" ? CATEGORIES.length : "—";
+    document.getElementById("st-b").textContent = new Set(PRODUCTS.map(p => p.brand).filter(Boolean)).size + "+";
+  } else {
+    document.getElementById("st-p").textContent = "1,488+";
+    document.getElementById("st-c").textContent = "5";
+    document.getElementById("st-b").textContent = "120+";
+  }
+});
+</script>
+</body>
+</html>

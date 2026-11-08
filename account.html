@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会员中心 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<section class="page-hero" style="padding:52px 0 42px">
+  <div class="container">
+    <span class="eyebrow">My Account</span>
+    <h1 class="display" id="acct-hello">会员中心</h1>
+    <p>订单、评价与个人信息都保存在本机浏览器（演示模式，无需注册登录）。</p>
+  </div>
+</section>
+
+<section style="padding:24px 0 80px">
+  <div class="container">
+    <div class="acct-tabs">
+      <button class="acct-tab active" data-tab="orders">我的订单</button>
+      <button class="acct-tab" data-tab="reviews">我的评价</button>
+      <button class="acct-tab" data-tab="profile">个人资料</button>
+    </div>
+
+    <!-- 订单 -->
+    <div class="acct-panel" id="panel-orders">
+      <div id="orders-list"></div>
+    </div>
+
+    <!-- 评价 -->
+    <div class="acct-panel" id="panel-reviews" style="display:none">
+      <div id="my-reviews"></div>
+    </div>
+
+    <!-- 资料 -->
+    <div class="acct-panel" id="panel-profile" style="display:none">
+      <div class="form-card" style="max-width:520px">
+        <h3>个人资料</h3>
+        <div class="form-grid" style="grid-template-columns:1fr">
+          <div class="form-field"><label>昵称</label><input id="pf-name" placeholder="用于社区发帖与评价署名"></div>
+          <div class="form-field"><label>年龄确认状态</label><input id="pf-age" disabled></div>
+        </div>
+        <button class="btn btn-primary" id="pf-save" style="margin-top:16px">保存资料</button>
+      </div>
+      <div class="notice" style="max-width:520px;margin-top:18px">
+        <b>清除本站数据</b>：清空购物车、订单、评价、帖子与年龄确认记录，页面将重新出现年龄确认。
+        <div style="margin-top:12px"><button class="btn btn-ghost" id="pf-clear">清空全部本地数据</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  /* Tab 切换 */
+  document.querySelectorAll(".acct-tab").forEach((t) => {
+    t.onclick = () => {
+      document.querySelectorAll(".acct-tab").forEach((x) => x.classList.remove("active"));
+      t.classList.add("active");
+      document.querySelectorAll(".acct-panel").forEach((p) => (p.style.display = "none"));
+      document.getElementById("panel-" + t.dataset.tab).style.display = "";
+    };
+  });
+
+  /* 订单 */
+  const orders = JSON.parse(localStorage.getItem("kasuga_orders") || "[]");
+  const listEl = document.getElementById("orders-list");
+  if (!orders.length) {
+    listEl.innerHTML = '<div class="empty-state"><div class="es-icon">📦</div><h3 class="display">还没有订单</h3><p>提交一次模拟订单后，这里会显示完整的订单记录</p><a href="shop.html" class="btn btn-primary">去逛商店</a></div>';
+  } else {
+    listEl.innerHTML = orders.slice().reverse().map((o) => `
+      <div class="form-card" style="margin-bottom:16px">
+        <h3 style="justify-content:space-between;margin-bottom:12px">
+          <span>订单 ${escHtml(o.id)}<span class="muted small" style="font-weight:400;margin-left:10px">${escHtml(o.date)}</span></span>
+          <span class="badge badge-new">客服确认中</span>
+        </h3>
+        ${(o.items || []).map((it) => {
+          const p = findProduct(it.id);
+          return `<div class="sum-row"><span>${escHtml(p ? p.name : "商品 #" + it.id)} × ${it.qty}</span><b>${p ? fmtYen(calcPrice(p).price * it.qty) : "—"}</b></div>`;
+        }).join("")}
+        <div class="sum-row"><span>运费</span><b>${o.ship ? fmtYen(o.ship) : "免费"}</b></div>
+        <div class="sum-row total"><span>应付合计</span><span>${fmtYen(o.total || 0)}</span></div>
+        <div class="sum-row small muted"><span>收货：${escHtml(o.name || "")} · ${escHtml(o.addr || "")}</span><span>${o.shipping === "express" ? "加急配送" : "标准配送"}</span></div>
+      </div>`).join("");
+  }
+
+  /* 我的评价 */
+  const mine = Reviews.getAll();
+  const rows = [];
+  Object.entries(mine).forEach(([pid, arr]) => {
+    arr.forEach((r) => rows.push({ pid: +pid, ...r }));
+  });
+  rows.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  document.getElementById("my-reviews").innerHTML = rows.length
+    ? rows.map((r) => {
+        const p = findProduct(r.pid);
+        return `<div class="review-item">
+          <div class="ri-head">
+            <div style="display:flex;gap:12px;align-items:center">
+              <a href="product.html?id=${r.pid}" style="font-weight:600;font-size:14px">${escHtml(p ? p.name : "商品 #" + r.pid)}</a>
+              <span class="ri-stars">${starStr(r.stars)}</span>
+            </div>
+            <span class="ri-date">${escHtml(r.date)}</span>
+          </div>
+          <p>${escHtml(r.text)}</p>
+        </div>`;
+      }).join("")
+    : '<p class="muted" style="padding:30px 0">还没有写过评价。到商品详情页可以发布第一条评价。</p>';
+
+  /* 资料 */
+  const nameEl = document.getElementById("pf-name");
+  nameEl.value = localStorage.getItem("kasuga_nickname") || "";
+  const ageOk = localStorage.getItem("kasuga_age_ok") === "1";
+  document.getElementById("pf-age").value = ageOk ? "已确认（本机记录）" : "未确认";
+  document.getElementById("pf-save").onclick = () => {
+    localStorage.setItem("kasuga_nickname", nameEl.value.trim());
+    showToast("资料已保存");
+  };
+  document.getElementById("pf-clear").onclick = () => {
+    ["kasuga_cart_v1", "kasuga_orders", "kasuga_last_order", "kasuga_reviews_v1", "kasuga_community_v1", "kasuga_messages", "kasuga_buyback", "kasuga_nickname", "kasuga_age_ok"].forEach((k) => localStorage.removeItem(k));
+    showToast("本地数据已清空，即将刷新…");
+    setTimeout(() => (location.href = "index.html"), 1200);
+  };
+});
+</script>
+</body>
+</html>

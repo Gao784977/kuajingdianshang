@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>年龄确认 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body style="background:#191714">
+<div class="age-gate show" style="position:fixed;display:grid;place-items:center;min-height:100vh;padding:20px">
+  <div class="age-gate-card">
+    <div class="gate-mark">加</div>
+    <h2>进入前请确认您的年龄</h2>
+    <p>本站销售烟草及相关制品。依据法规，仅向年满 20 周岁的成年顾客提供服务。<br>未满年龄者请立即离开。吸烟有害健康。</p>
+    <div class="age-gate-actions">
+      <button class="btn btn-primary" id="gate-yes">已满 20 岁，进入典藏馆</button>
+      <button class="btn btn-ghost" id="gate-no">未满 20 岁，离开</button>
+    </div>
+    <p class="small" style="opacity:.5;margin-top:18px">KASUGA SHOJI · 横滨典藏馆<br>演示站点：年龄确认仅记录在本机浏览器</p>
+  </div>
+</div>
+<script>
+document.getElementById("gate-yes").onclick = () => {
+  localStorage.setItem("kasuga_age_ok", "1");
+  location.href = "index.html";
+};
+document.getElementById("gate-no").onclick = () => {
+  document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#191714;color:#fff;text-align:center;padding:20px"><div><h1 style="font-family:serif;font-size:26px;margin-bottom:12px">感谢您的诚实</h1><p style="opacity:.6;font-size:14px">本站内容仅对成年人开放。请在年满 20 岁后再来访问。</p></div></div>';
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>购物车 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<section style="padding:48px 0 70px">
+  <div class="container">
+    <span class="eyebrow">Shopping Cart</span>
+    <h1 class="display" style="font-size:32px;margin:10px 0 36px">购物车</h1>
+
+    <div id="cart-empty" style="display:none">
+      <div class="empty-state">
+        <div class="es-icon">🛒</div>
+        <h3 class="display">购物车还是空的</h3>
+        <p>去商店逛逛，把心仪的典藏好物加入购物车</p>
+        <a href="shop.html" class="btn btn-primary btn-lg">去逛商店</a>
+      </div>
+    </div>
+
+    <div class="cart-layout" id="cart-main" style="display:none">
+      <div>
+        <table class="cart-table">
+          <thead>
+            <tr><th style="width:46%">商品</th><th>单价</th><th>数量</th><th>小计</th><th></th></tr>
+          </thead>
+          <tbody id="cart-body"></tbody>
+        </table>
+      </div>
+      <aside class="summary-card">
+        <h3>订单摘要</h3>
+        <div class="sum-row"><span>商品合计</span><b id="sum-goods">—</b></div>
+        <div class="sum-row"><span>运费</span><b id="sum-ship">—</b></div>
+        <div class="sum-row total"><span>应付合计</span><span id="sum-total">—</span></div>
+        <p class="small muted" id="ship-hint" style="margin:12px 0 18px"></p>
+        <a href="checkout.html" class="btn btn-accent btn-block btn-lg">去结算</a>
+        <a href="shop.html" class="btn btn-ghost btn-block" style="margin-top:10px">继续购物</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script src="assets/js/cart.js?v=20261108"></script>
+</body>
+</html>

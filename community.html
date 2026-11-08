@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>藏家社区 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active="community"></div>
+
+<section class="page-hero" style="padding:56px 0 48px">
+  <div class="container">
+    <span class="eyebrow">Community</span>
+    <h1 class="display">藏家社区</h1>
+    <p>分享开罐心得、雪茄笔记与烟具体验。所有内容保存在您的浏览器本地（演示模式）。</p>
+  </div>
+</section>
+
+<section style="padding:10px 0 80px">
+  <div class="container">
+    <div class="checkout-layout">
+      <div>
+        <form class="review-form" id="post-form" style="max-width:none;margin-bottom:36px">
+          <h3 class="display" style="font-size:19px">发布新帖</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <input id="pt-user" placeholder="昵称（可匿名）">
+            <select id="pt-topic">
+              <option>开罐心得</option>
+              <option>雪茄笔记</option>
+              <option>烟具体验</option>
+              <option>新手求助</option>
+              <option>自由讨论</option>
+            </select>
+          </div>
+          <textarea id="pt-text" placeholder="和大家聊聊…" required></textarea>
+          <div><button class="btn btn-primary" type="submit">发布</button></div>
+        </form>
+
+        <h3 class="display" style="font-size:20px;margin-bottom:18px">最新动态</h3>
+        <div id="post-list"></div>
+      </div>
+
+      <aside>
+        <div class="summary-card" style="margin-bottom:24px">
+          <h3>社区统计</h3>
+          <div class="sum-row"><span>帖子</span><b id="cm-posts">0</b></div>
+          <div class="sum-row"><span>商品评价</span><b id="cm-reviews">0</b></div>
+          <div class="sum-row"><span>在册商品</span><b id="cm-products">0</b></div>
+        </div>
+        <div class="notice">
+          社区公约：不讨论未成年人购烟、不发布代购广告、不晒含敏感信息的订单截图。违者删帖处理。
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const KEY = "kasuga_community_v1";
+  const SEED = [
+    { user: "横滨老烟斗", topic: "雪茄笔记", text: "托罗款开罐两周后风味明显圆润了，奶油感上来，配无糖咖啡绝了。", date: "2026-10-28" },
+    { user: "手卷十二年", topic: "开罐心得", text: "这款半重口手卷放置一个月再抽，杂气褪掉大半，值回票价。", date: "2026-10-25" },
+    { user: "Zippo 收藏狗", topic: "烟具体验", text: "纯银机芯保养心得：铰链处一滴钟表油就够，多了反而积灰。", date: "2026-10-21" },
+  ];
+
+  let posts = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (!posts) { posts = SEED; localStorage.setItem(KEY, JSON.stringify(posts)); }
+
+  function renderPosts() {
+    document.getElementById("post-list").innerHTML = posts.map((p) => `
+      <div class="review-item">
+        <div class="ri-head">
+          <div style="display:flex;gap:12px;align-items:center">
+            <span class="ri-user">${escHtml(p.user || "匿名藏家")}</span>
+            <span class="filter-chip" style="cursor:default;font-size:11px;padding:3px 10px">${escHtml(p.topic || "自由讨论")}</span>
+          </div>
+          <span class="ri-date">${escHtml(p.date)}</span>
+        </div>
+        <p>${escHtml(p.text)}</p>
+      </div>`).join("");
+    document.getElementById("cm-posts").textContent = posts.length;
+    const rv = Reviews.getAll();
+    document.getElementById("cm-reviews").textContent =
+      Object.values(rv).reduce((s, a) => s + a.length, 0);
+    document.getElementById("cm-products").textContent =
+      typeof PRODUCTS !== "undefined" ? PRODUCTS.length.toLocaleString() : "—";
+  }
+
+  document.getElementById("post-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = document.getElementById("pt-text").value.trim();
+    if (!text) return;
+    posts.unshift({
+      user: document.getElementById("pt-user").value.trim() || "匿名藏家",
+      topic: document.getElementById("pt-topic").value,
+      text,
+      date: new Date().toISOString().slice(0, 10),
+    });
+    localStorage.setItem(KEY, JSON.stringify(posts));
+    document.getElementById("pt-text").value = "";
+    renderPosts();
+    showToast("帖子已发布");
+  });
+
+  renderPosts();
+});
+</script>
+</body>
+</html>

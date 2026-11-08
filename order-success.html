@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下单成功 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<section style="padding:64px 0 84px">
+  <div class="container" style="max-width:760px">
+    <div class="empty-state" id="os-no" style="display:none">
+      <div class="es-icon">🧾</div>
+      <h3 class="display">没有待展示的订单</h3>
+      <p>下单成功后这里会显示订单详情</p>
+      <a href="shop.html" class="btn btn-primary btn-lg">去逛商店</a>
+    </div>
+
+    <div id="os-main" style="display:none">
+      <div style="text-align:center;margin-bottom:36px">
+        <div class="es-icon" style="font-size:60px">✅</div>
+        <h1 class="display" style="font-size:32px;margin-top:10px">下单成功，感谢惠顾</h1>
+        <p class="muted" style="margin-top:12px">订单已提交（演示站点 · 模拟下单，未接入真实支付）<br>客服将按您预留的联系方式与您确认付款与配送事宜。</p>
+      </div>
+
+      <div class="order-id-box" id="os-id">—</div>
+
+      <div class="form-card">
+        <h3>订单摘要</h3>
+        <div class="sum-row"><span>商品合计</span><b id="os-goods">—</b></div>
+        <div class="sum-row"><span>运费</span><b id="os-ship">—</b></div>
+        <div class="sum-row total"><span>应付合计</span><span id="os-total">—</span></div>
+      </div>
+
+      <div class="form-card">
+        <h3>接下来会发生什么</h3>
+        <div class="steps">
+          <div class="step"><span class="step-dot">1</span><div><b>订单确认</b><p>客服核对库存后与您电话/邮件确认订单内容。</p></div></div>
+          <div class="step"><span class="step-dot">2</span><div><b>付款方式</b><p>演示站点未接入支付，正式上线后将支持在线支付与到店付款。</p></div></div>
+          <div class="step"><span class="step-dot">3</span><div><b>精心包装发货</b><p>商品经防潮处理后发出，标准配送 2–5 个工作日送达。</p></div></div>
+          <div class="step"><span class="step-dot">4</span><div><b>验收与售后</b><p>签收后如有问题，参照退换政策联系客服处理。</p></div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+        <a href="account.html" class="btn btn-primary">查看我的订单</a>
+        <a href="shop.html" class="btn btn-outline">继续逛商店</a>
+        <a href="faq.html" class="btn btn-ghost">常见问题</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  let o = null;
+  try { o = JSON.parse(localStorage.getItem("kasuga_last_order")); } catch (e) {}
+  if (!o || !o.orderId) {
+    document.getElementById("os-no").style.display = "block";
+    return;
+  }
+  document.getElementById("os-main").style.display = "block";
+  document.getElementById("os-id").innerHTML =
+    '订单号 <b>' + escHtml(o.orderId) + '</b> · ' + escHtml(new Date().toLocaleDateString("zh-Hans"));
+  document.getElementById("os-goods").textContent = fmtYen(o.goods || 0);
+  document.getElementById("os-ship").textContent = o.ship ? fmtYen(o.ship) : "免费";
+  document.getElementById("os-total").textContent = fmtYen(o.total || 0);
+});
+</script>
+</body>
+</html>

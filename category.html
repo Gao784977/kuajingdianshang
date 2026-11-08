@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分类浏览 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active="shop"></div>
+
+<section class="page-hero" style="padding:52px 0 44px">
+  <div class="container">
+    <span class="eyebrow" id="cat-en">Collection</span>
+    <h1 class="display" id="cat-name">分类浏览</h1>
+    <p id="cat-desc">正在加载分类数据…</p>
+  </div>
+</section>
+
+<section style="padding:30px 0 64px">
+  <div class="container">
+    <div id="cat-chips" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px"></div>
+    <div class="shop-toolbar" style="margin-bottom:20px">
+      <div class="toolbar-group">
+        <select class="sort-select" id="sort">
+          <option value="default">默认排序</option>
+          <option value="new">最新上架</option>
+          <option value="price-asc">价格从低到高</option>
+          <option value="price-desc">价格从高到低</option>
+          <option value="name">名称排序</option>
+        </select>
+      </div>
+      <span class="result-info" id="result-info">加载中…</span>
+    </div>
+    <div class="products-grid" id="grid"></div>
+    <div id="empty" style="display:none">
+      <div class="empty-state">
+        <div class="es-icon">⌕</div>
+        <h3 class="display">该分类下暂时没有商品</h3>
+        <p>可以看看其他分类，或到全部商品里逛逛</p>
+        <a href="shop.html" class="btn btn-outline">去全部商品</a>
+      </div>
+    </div>
+    <div class="pagination" id="pager"></div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script src="assets/js/category.js?v=20261108"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>联系我们 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<section class="page-hero" style="padding:56px 0 48px">
+  <div class="container">
+    <span class="eyebrow">Contact</span>
+    <h1 class="display">联系我们</h1>
+    <p>选品咨询、订单核对、回收估价——任何问题，写信给我们。</p>
+  </div>
+</section>
+
+<section style="padding:10px 0 80px">
+  <div class="container">
+    <div class="checkout-layout">
+      <form class="form-card" id="contact-form">
+        <h3>留言表单</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>称呼 <span class="req">*</span></label><input name="name" required placeholder="您的称呼"></div>
+          <div class="form-field"><label>邮箱 <span class="req">*</span></label><input name="email" type="email" required placeholder="用于接收回复"></div>
+          <div class="form-field full"><label>主题</label>
+            <select name="topic">
+              <option>选品咨询</option>
+              <option>订单相关</option>
+              <option>回收估价</option>
+              <option>售后与退换</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="form-field full"><label>留言内容 <span class="req">*</span></label><textarea name="msg" required style="min-height:140px;resize:vertical" placeholder="请描述您的问题（订单号请一并附上）"></textarea></div>
+        </div>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-2);margin-top:6px">
+          <input type="checkbox" required style="margin-top:3px;accent-color:var(--accent)">
+          <span>我已确认年满 20 岁，并同意本站以此方式与我联系。（演示站点：留言仅保存在本地浏览器）</span>
+        </label>
+        <button class="btn btn-primary btn-lg" type="submit" style="margin-top:18px">发送留言</button>
+      </form>
+
+      <aside>
+        <div class="summary-card" style="margin-bottom:24px">
+          <h3>商号信息</h3>
+          <div class="sum-row"><span>商号</span><b>KASUGA SHOJI 横滨典藏馆</b></div>
+          <div class="sum-row"><span>所在地</span><b>神奈川县横滨市</b></div>
+          <div class="sum-row"><span>营业时间</span><b>11:00–19:00（周三休）</b></div>
+          <div class="sum-row"><span>咨询邮箱</span><b>support@kasuga.example</b></div>
+          <div class="sum-row"><span>客服电话</span><b>045-XXXX-XXXX</b></div>
+          <p class="small muted" style="margin-top:14px;line-height:1.8">演示站点：以上联系方式为占位信息。真实信息请以原站公示为准。</p>
+        </div>
+        <div class="notice">
+          急件请优先使用电话；邮件与表单一般在 1 个工作日内回复。回收估价请附商品照片与购买年份，鉴定师会给出预估区间。
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("contact-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const box = JSON.parse(localStorage.getItem("kasuga_messages") || "[]");
+    box.unshift({ name: fd.get("name"), email: fd.get("email"), topic: fd.get("topic"), msg: fd.get("msg"), date: new Date().toISOString().slice(0, 10) });
+    localStorage.setItem("kasuga_messages", JSON.stringify(box));
+    e.target.reset();
+    showToast("留言已发送（演示：已存本地）");
+  });
+});
+</script>
+</body>
+</html>

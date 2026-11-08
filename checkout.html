@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结算 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<section style="padding:48px 0 70px">
+  <div class="container">
+    <span class="eyebrow">Checkout</span>
+    <h1 class="display" style="font-size:32px;margin:10px 0 36px">结算台</h1>
+
+    <div id="ck-empty" style="display:none">
+      <div class="empty-state">
+        <div class="es-icon">🧾</div>
+        <h3 class="display">购物车中没有商品</h3>
+        <p>先去挑选商品，再回来结算</p>
+        <a href="shop.html" class="btn btn-primary btn-lg">去逛商店</a>
+      </div>
+    </div>
+
+    <div class="checkout-layout" id="ck-main" style="display:none">
+      <form id="checkout-form">
+        <div class="form-card">
+          <h3><span class="step-num">1</span>收货信息</h3>
+          <div class="form-grid">
+            <div class="form-field"><label>姓名 <span class="req">*</span></label><input name="name" required placeholder="收货人姓名"></div>
+            <div class="form-field"><label>电话 <span class="req">*</span></label><input name="phone" required placeholder="联系电话"></div>
+            <div class="form-field"><label>邮箱 <span class="req">*</span></label><input name="email" type="email" required placeholder="用于接收订单通知"></div>
+            <div class="form-field"><label>邮政编码 <span class="req">*</span></label><input name="zip" required placeholder="如：231-0023"></div>
+            <div class="form-field full"><label>地址 <span class="req">*</span></label><input name="addr1" required placeholder="都道府县 · 市区町村"></div>
+            <div class="form-field full"><label>详细地址</label><input name="addr2" placeholder="街道门牌 / 公寓房间号"></div>
+            <div class="form-field full"><label>订单备注</label><input name="note" placeholder="配送时间偏好等（可选）"></div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3><span class="step-num">2</span>配送方式</h3>
+          <div class="radio-row" id="ship-methods">
+            <label class="radio-card selected">
+              <input type="radio" name="shipping" value="standard" checked>
+              <div><b>标准配送</b><span>2–5 个工作日送达<br>运费 <i class="ship-fee" data-mult="1"></i><i class="ship-free"></i></span></div>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="shipping" value="express">
+              <div><b>加急配送</b><span>1–2 个工作日送达<br>运费 <i class="ship-fee" data-mult="2"></i></span></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3><span class="step-num">3</span>支付方式</h3>
+          <div class="notice">
+            本站为演示站点，尚未接入真实支付。订单提交后生成订单号，客服将另行与您确认付款方式。
+            <b>（正式上线时在此接入支付）</b>
+          </div>
+          <div class="radio-row">
+            <label class="radio-card selected">
+              <input type="radio" name="payment" value="followup" checked>
+              <div><b>客服确认后付款</b><span>提交订单后由客服联系确认</span></div>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="offline">
+              <div><b>到店自提付款</b><span>横滨门店自提并现场支付</span></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3><span class="step-num">4</span>确认下单</h3>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2)">
+            <input type="checkbox" name="agree" required style="margin-top:4px;accent-color:var(--accent)">
+            <span>我已确认年满 20 岁，并同意<a href="guide.html" style="color:var(--accent)">购物条款</a>与<a href="guide.html#returns">退换政策</a>。</span>
+          </label>
+          <button class="btn btn-accent btn-lg btn-block" type="submit" style="margin-top:18px">提交订单</button>
+        </div>
+      </form>
+
+      <aside class="summary-card">
+        <h3>订单明细</h3>
+        <div id="ck-items"></div>
+        <div class="sum-row" style="margin-top:14px"><span>商品合计</span><b id="ck-goods">—</b></div>
+        <div class="sum-row"><span>运费</span><b id="ck-ship">—</b></div>
+        <div class="sum-row total"><span>应付合计</span><span id="ck-total">—</span></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script>
+/* 结算页逻辑 */
+document.addEventListener("DOMContentLoaded", () => {
+  const shipCost = () => {
+    const goods = Cart.subtotal();
+    const method = document.querySelector('input[name="shipping"]:checked').value;
+    let cost = goods >= SITE_CONFIG.shipping.freeOver ? 0 : SITE_CONFIG.shipping.flat;
+    if (method === "express") cost = SITE_CONFIG.shipping.flat * 2;
+    return cost;
+  };
+
+  function render() {
+    const items = Cart.get();
+    if (!items.length) {
+      document.getElementById("ck-empty").style.display = "block";
+      document.getElementById("ck-main").style.display = "none";
+      return;
+    }
+    document.getElementById("ck-main").style.display = "";
+    document.getElementById("ck-items").innerHTML = items.map((it) => {
+      const p = findProduct(it.id);
+      if (!p) return "";
+      const { price } = calcPrice(p);
+      return `<div class="sum-row"><span>${escHtml(p.name)} × ${it.qty}</span><b>${fmtYen(price * it.qty)}</b></div>`;
+    }).join("");
+    const goods = Cart.subtotal();
+    const ship = shipCost();
+    document.getElementById("ck-goods").textContent = fmtYen(goods);
+    document.getElementById("ck-ship").textContent = ship === 0 ? "免费" : fmtYen(ship);
+    document.getElementById("ck-total").textContent = fmtYen(goods + ship);
+  }
+
+  /* 运费文案填充（随 config 变化） */
+  document.querySelectorAll(".ship-fee").forEach((el) => {
+    el.textContent = fmtYen(SITE_CONFIG.shipping.flat * Number(el.dataset.mult || 1));
+    el.style.fontStyle = "normal";
+  });
+  const freeHint = document.querySelector(".ship-free");
+  if (freeHint) freeHint.textContent = "（满 " + fmtYen(SITE_CONFIG.shipping.freeOver) + " 包邮）";
+  document.getElementById("ship-methods").addEventListener("change", render);
+
+  /* radio-card 选中态 */
+  document.querySelectorAll(".radio-card input").forEach((r) => {
+    r.addEventListener("change", () => {
+      document.querySelectorAll('input[name="' + r.name + '"]').forEach((x) => {
+        x.closest(".radio-card").classList.toggle("selected", x.checked);
+      });
+    });
+  });
+
+  document.getElementById("checkout-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const items = Cart.get();
+    if (!items.length) return;
+    const goods = Cart.subtotal();
+    const total = goods + shipCost();
+    const orderId = "KSG-" + Date.now().toString(36).toUpperCase();
+    const orders = JSON.parse(localStorage.getItem("kasuga_orders") || "[]");
+    orders.push({
+      id: orderId,
+      date: new Date().toISOString().slice(0, 10),
+      items: items.map((i) => ({ id: i.id, qty: i.qty })),
+      goods, ship: shipCost(), total,
+      name: fd.get("name"), phone: fd.get("phone"), email: fd.get("email"),
+      addr: (fd.get("addr1") || "") + " " + (fd.get("addr2") || ""),
+      shipping: fd.get("shipping"), payment: fd.get("payment"),
+    });
+    localStorage.setItem("kasuga_orders", JSON.stringify(orders));
+    localStorage.setItem("kasuga_last_order", JSON.stringify({ orderId, total, goods, ship: shipCost() }));
+    Cart.clear();
+    location.href = "order-success.html";
+  });
+
+  render();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品详情 — KASUGA SHOJI 横滨典藏馆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active="shop"></div>
+
+<section style="padding:40px 0 64px">
+  <div class="container" id="pd-root">
+    <p class="small muted" style="margin-bottom:26px">
+      <a href="shop.html">全部商品</a> › <a id="bc-cat" href="#">分类</a> › <span id="bc-name">商品详情</span>
+    </p>
+    <div id="pd-loading" class="empty-state">
+      <div class="es-icon">❋</div>
+      <h3 class="display">正在载入商品…</h3>
+    </div>
+    <div id="pd-notfound" style="display:none" class="empty-state">
+      <div class="es-icon">⌕</div>
+      <h3 class="display">没有找到该商品</h3>
+      <p>商品可能已下架，去商店逛逛别的</p>
+      <a href="shop.html" class="btn btn-primary">返回全部商品</a>
+    </div>
+
+    <div id="pd-wrap" style="display:none">
+      <div class="product-layout">
+        <div class="pd-gallery">
+          <div class="pd-main-img"><img id="pd-img" src="" alt=""></div>
+        </div>
+        <div class="pd-info">
+          <span class="eyebrow" id="pd-cat"></span>
+          <h1 id="pd-name" class="display"></h1>
+          <p class="pd-en" id="pd-en"></p>
+          <div class="pd-price-block">
+            <span class="pd-price" id="pd-price"></span>
+            <span class="pd-regular" id="pd-regular"></span>
+          </div>
+          <div class="pd-stock" id="pd-stock"></div>
+          <p id="pd-spec" style="font-size:14px;color:var(--ink-2)"></p>
+          <div class="pd-qty">
+            <span class="small muted">数量</span>
+            <div class="qty-input">
+              <button id="qty-minus">−</button>
+              <input id="qty" type="number" value="1" min="1" max="99">
+              <button id="qty-plus">＋</button>
+            </div>
+          </div>
+          <div class="pd-actions">
+            <button class="btn btn-accent btn-lg" id="pd-add">加入购物车</button>
+            <a class="btn btn-outline btn-lg" href="cart.html">查看购物车</a>
+          </div>
+          <div class="pd-meta" id="pd-meta"></div>
+        </div>
+      </div>
+
+      <!-- 评论区 -->
+      <div class="review-block">
+        <h2 class="display" style="font-size:24px;margin-bottom:8px">藏家评价</h2>
+        <p class="small muted" style="margin-bottom:26px">评价保存在您的浏览器本地，正式上线后接入服务端。</p>
+        <form class="review-form" id="review-form">
+          <div style="display:flex;gap:12px;align-items:center">
+            <span class="small muted">评分</span>
+            <div class="star-input" id="star-input"></div>
+          </div>
+          <input type="text" id="rv-user" placeholder="您的昵称（可选）" maxlength="24">
+          <textarea id="rv-text" placeholder="分享您对这件商品的评价…" maxlength="500" required></textarea>
+          <button class="btn btn-primary" type="submit">发布评价</button>
+        </form>
+        <div id="review-list"></div>
+      </div>
+
+      <!-- 相关推荐 -->
+      <div style="margin-top:60px" id="related-wrap" hidden>
+        <h2 class="display" style="font-size:24px;margin-bottom:26px">同系列推荐</h2>
+        <div class="products-grid" id="related"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script src="assets/js/product.js?v=20261108"></script>
+</body>
+</html>

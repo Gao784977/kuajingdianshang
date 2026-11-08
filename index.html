@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KASUGA SHOJI 横滨典藏馆 — 从横滨出发的成人典藏购物</title>
+<meta name="description" content="Kasuga Co.Ltd 横滨典藏馆：日本香烟、加热式烟草、手卷烟丝、烟斗丝、雪茄、烟具与贵金属回收服务。仅面向年满20岁的成年顾客。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css?v=20261108">
+</head>
+<body>
+<div id="header" data-active=""></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <span class="hero-eyebrow"><span class="eyebrow">Yokohama Collection</span><span class="dot"></span><span class="eyebrow" style="color:var(--ink-3)">Est. Yokohama</span></span>
+      <h1 class="display">探索典藏级<br>烟草与<em>生活良品</em></h1>
+      <p class="hero-sub">从横滨出发，为成年顾客提供可信赖的商品与专业服务。日本香烟、加热式烟草、烟斗雪茄与精选烟具，皆在此间。</p>
+      <div class="hero-actions">
+        <a href="shop.html" class="btn btn-primary btn-lg">进入全部商品</a>
+        <a href="buyback.html" class="btn btn-outline btn-lg">贵金属回收 →</a>
+      </div>
+      <div class="hero-stats" id="hero-stats">
+        <div class="hero-stat"><b>2000+</b><span>在册商品</span></div>
+        <div class="hero-stat"><b>9</b><span>典藏系列</span></div>
+        <div class="hero-stat"><b>20+</b><span>合作品牌</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-frame">
+        <img src="assets/img/hero.jpg" alt="横滨典藏馆" onerror="this.src='https://images.unsplash.com/photo-1495364141860-b0d03a8c0946?q=80&w=1200&auto=format&fit=crop';">
+      </div>
+      <div class="hero-badge">
+        <span class="badge-icon">❋</span>
+        <div><b>大卫杜夫代理店</b><span>日本授权雪茄渠道</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 分类典藏 -->
+<section class="section" style="padding-top:64px">
+  <div class="container">
+    <div class="section-head" style="text-align:center">
+      <span class="eyebrow">Collections</span>
+      <h2 class="display">探索典藏与服务</h2>
+      <p>九大系列，一件件甄选入馆</p>
+    </div>
+    <div class="collections-grid" id="home-collections"><!-- JS 注入 --></div>
+  </div>
+</section>
+
+<!-- 本周推荐 -->
+<section class="section" style="padding-top:24px;background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <span class="eyebrow">Featured</span>
+        <h2 class="display">本周推荐</h2>
+      </div>
+      <a href="shop.html" class="btn btn-ghost btn-sm">查看全部 →</a>
+    </div>
+    <div class="products-grid" id="home-featured"><!-- JS 注入 --></div>
+  </div>
+</section>
+
+<!-- 新品入馆 -->
+<section class="section">
+  <div class="container">
+    <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <span class="eyebrow">New Arrivals</span>
+        <h2 class="display">新品入馆</h2>
+      </div>
+      <a href="shop.html?sort=new" class="btn btn-ghost btn-sm">更多新品 →</a>
+    </div>
+    <div class="products-grid" id="home-new"><!-- JS 注入 --></div>
+  </div>
+</section>
+
+<!-- 帮助与服务 -->
+<section class="section" style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="section-head" style="text-align:center">
+      <span class="eyebrow">Information</span>
+      <h2 class="display">帮助与联系</h2>
+    </div>
+    <div class="service-row">
+      <div class="service-card">
+        <div class="sc-icon">✦</div>
+        <h3>购物指南</h3>
+        <p>从选购到下单的完整流程说明，首次访问请先阅读。</p>
+        <a href="guide.html">阅读指南 →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon">❍</div>
+        <h3>配送说明</h3>
+        <p>全日本配送，包装谨慎克制，隐私安心。</p>
+        <a href="guide.html#shipping">了解配送 →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon">❈</div>
+        <h3>退换说明</h3>
+        <p>符合条件的商品支持退换，细节以条款为准。</p>
+        <a href="guide.html#returns">退换政策 →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon">☎</div>
+        <h3>联系我们</h3>
+        <p>营业时间内的人工客服与回信支持。</p>
+        <a href="contact.html">联系客服 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 特色服务横幅 -->
+<section class="section" style="padding-bottom:70px">
+  <div class="container">
+    <div class="collections-grid" style="grid-template-columns:repeat(2,1fr)">
+      <a class="collection-card" href="buyback.html" style="display:flex;align-items:center;gap:24px;padding:30px 34px">
+        <div class="sc-icon" style="margin:0;font-size:30px;flex-shrink:0">◉</div>
+        <div>
+          <div class="cc-en">Purchase Service</div>
+          <div class="cc-name" style="margin-bottom:2px">贵金属回收</div>
+          <div class="cc-desc">预约估价、到店或邮寄服务</div>
+        </div>
+      </a>
+      <a class="collection-card" href="category.html?cat=adult" style="display:flex;align-items:center;gap:24px;padding:30px 34px">
+        <div class="sc-icon" style="margin:0;font-size:30px;flex-shrink:0">✉</div>
+        <div>
+          <div class="cc-en">Private</div>
+          <div class="cc-name" style="margin-bottom:2px">成人用品专区</div>
+          <div class="cc-desc">克制展示、隐私包装与安心配送</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="assets/js/config.js?v=20261108"></script>
+<script src="assets/js/data.js?v=20261108"></script>
+<script src="assets/js/app.js?v=20261108"></script>
+<script src="assets/js/layout.js?v=20261108"></script>
+<script src="assets/js/home.js?v=20261108"></script>
+</body>
+</html>
